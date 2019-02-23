@@ -4,9 +4,15 @@ from matplotlib import style
 style.use('ggplot')
 import numpy as np
 
-df = pd.read_csv('seds.csv')
-print(df.head())
-print(df.loc[(df['value'] > 0)])
+df = pd.read_csv('../seds.csv')
+AKP = df.loc[(df['msn'] == 'HYTCP') & (df['state_code'] == 'AK')]
+AKP = AKP.loc[(AKP['year'] == 2016)]
+
+
+AKC = df.loc[(df['msn'] == 'HYTCB') & (df['state_code'] == 'AK')]
+AKC = AKC.loc[(AKC['year'] == 2016)]
+print(AKC['value'])
+
 
 '''
 df.set_index('Date', inplace=True)
