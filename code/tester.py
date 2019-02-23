@@ -110,7 +110,7 @@ for i in states:
 	states[i] = dct
 
 	fig = plt.figure()
-	ax1 = fig.add_subplot(111, projection='3d')
+	ax1 = fig.add_subplot(122, projection='3d')
 
 	major_ticks_y = list(range(1996, 2017, 5))
 	major_ticks_x = [1, 1.5, 2, 2.5, 3, 3.5, 4]
