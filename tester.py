@@ -15,7 +15,7 @@ df = pd.read_csv('../seds.csv')
 
 for i in states:
 	li = []
-	for j in range(1996, 2017, 1):
+	for j in range(1996, 2000, 1):
 		AKP = df.loc[(df['msn'] == 'HYTCP') & (df['state_code'] == i)]
 		AKP = AKP.loc[(AKP['year'] == j)]
 
@@ -28,6 +28,7 @@ for i in states:
 
 	
 print(states)
+plt.plot('x', 'y', states)
 
 
 
