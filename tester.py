@@ -3,8 +3,13 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 style.use('ggplot')
 import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+
 
 states = {
+		'NJ': 'Massachussets',
+		'NC': 'North Carolina',
+		'CA': 'California',
         'AK': 'Alaska',
         'AL': 'Alabama',
         'AR': 'Arkansas',
@@ -19,7 +24,9 @@ SOTGP
 WYTCP
 '''
 
-strings = ['HYTCB','SOTCB','WYTCB']
+strings_p = ['HYTCP', 'SOTGP', 'WYTCP']
+strings_c = ['HYTXB','SOTXB','WYTXB']
+names = ['Hydroelectric', 'Solar', 'Wind']
 
 for i in states:
 	li = []
@@ -29,16 +36,47 @@ for i in states:
 	'''
 	dct = {}
 
-	AKC = df.loc[(df['msn'].isin(strings)) & (df['state_code'] == i)]
+	AKP = df.loc[(df['msn'].isin(strings_p)) & (df['state_code'] == i)]
+	AKP = AKP.loc[(1996 <= AKP['year']) & (AKP['year'] <= 2016)]
+
+	AKC = df.loc[(df['msn'].isin(strings_c)) & (df['state_code'] == i)]
 	AKC = AKC.loc[(1996 <= AKC['year']) & (AKC['year'] <= 2016)]
-	for j in strings:
-		AKC_temp = AKC.loc[(AKC['msn'] == j)]
-		print(AKC_temp)
-		temp = AKC_temp['value'].values.tolist()
-		dct[j] = temp
+	for j in range(3):
+		AKC_temp = AKC.loc[(AKC['msn'] == strings_c[j])]
+		temp_c = AKC_temp['value'].values.tolist()
+		temp_c = [k * 0.29307107017 for k in temp_c]
+
+		AKP_temp = AKP.loc[(AKP['msn'] == strings_p[j])]
+		temp_p = AKP_temp['value'].values.tolist()
+
+		temp = []
+		for k in range(21):
+			temp.append(temp_p[k] - temp_c[k])
+
+		dct[names[j]] = temp
 
 	states[i] = dct
-	print(pd.DataFrame.from_dict(dct, orient='index'))
+
+	fig = plt.figure()
+	ax1 = fig.add_subplot(111, projection='3d')
+
+	major_ticks_y = list(range(1996, 2017, 5))
+	major_ticks_x = [1, 1.5, 2, 2.5, 3, 3.5, 4]
+
+	ax1.set_yticks(major_ticks_y)
+	ax1.set_xticks(major_ticks_x)
+	ax1.set_xticklabels(['', 'Hydroelectric', '', 'Solar', '', 'Wind'])
+
+	xpos = [1]*21 + [2]*21 + [3]*21
+	ypos = list(range(1996, 2017, 1)) * 3
+	zpos = np.ones(63)
+	dz = dct['Hydroelectric'] + dct['Solar'] + dct['Wind']
+	print(dz)
+	dx = np.ones(63)
+	dy = np.ones(63)
+
+	ax1.bar3d(xpos, ypos, zpos, dx, dy, dz, color='#00ceaa')
+	plt.show()
 
 	
 print(states)
