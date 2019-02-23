@@ -13,22 +13,35 @@ states = {
 
 df = pd.read_csv('../seds.csv')
 
+'''
+HYTCP
+SOTGP
+WYTCP
+'''
+
+strings = ['HYTCB','SOTCB','WYTCB']
+
 for i in states:
 	li = []
-	for j in range(1996, 2000, 1):
-		AKP = df.loc[(df['msn'] == 'HYTCP') & (df['state_code'] == i)]
-		AKP = AKP.loc[(AKP['year'] == j)]
+	'''
+	AKP = df.loc[(df['msn'] in 'HYTCP') & (df['state_code'] == i)]
+	AKP = AKP.loc[(1996 <= AKP['year']) & (AKP['year']<= 2016)]
+	'''
+	dct = {}
 
-		AKC = df.loc[(df['msn'] == 'HYTCB') & (df['state_code'] == i)]
-		AKC = AKC.loc[(AKC['year'] == j)]
-		x = AKP.iloc[0]['value']
-		li.append(x)
+	AKC = df.loc[(df['msn'].isin(strings)) & (df['state_code'] == i)]
+	AKC = AKC.loc[(1996 <= AKC['year']) & (AKC['year'] <= 2016)]
+	for j in strings:
+		AKC_temp = AKC.loc[(AKC['msn'] == j)]
+		print(AKC_temp)
+		temp = AKC_temp['value'].values.tolist()
+		dct[j] = temp
 
-	states[i] = li
+	states[i] = dct
+	print(pd.DataFrame.from_dict(dct, orient='index'))
 
 	
 print(states)
-plt.plot('x', 'y', states)
 
 
 
