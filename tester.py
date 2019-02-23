@@ -4,14 +4,33 @@ from matplotlib import style
 style.use('ggplot')
 import numpy as np
 
+states = {
+        'AK': 'Alaska',
+        'AL': 'Alabama',
+        'AR': 'Arkansas',
+}
+
+
 df = pd.read_csv('../seds.csv')
-AKP = df.loc[(df['msn'] == 'HYTCP') & (df['state_code'] == 'AK')]
-AKP = AKP.loc[(AKP['year'] == 2016)]
+
+for i in states:
+	li = []
+	for j in range(1996, 2017, 1):
+		AKP = df.loc[(df['msn'] == 'HYTCP') & (df['state_code'] == i)]
+		AKP = AKP.loc[(AKP['year'] == j)]
+
+		AKC = df.loc[(df['msn'] == 'HYTCB') & (df['state_code'] == i)]
+		AKC = AKC.loc[(AKC['year'] == j)]
+		x = AKP.iloc[0]['value']
+		li.append(x)
+
+	states[i] = li
+
+	
+print(states)
 
 
-AKC = df.loc[(df['msn'] == 'HYTCB') & (df['state_code'] == 'AK')]
-AKC = AKC.loc[(AKC['year'] == 2016)]
-print(AKC['value'])
+
 
 
 '''
