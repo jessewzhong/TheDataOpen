@@ -7,12 +7,56 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 states = {
-		'NJ': 'Massachussets',
-		'NC': 'North Carolina',
-		'CA': 'California',
         'AK': 'Alaska',
         'AL': 'Alabama',
         'AR': 'Arkansas',
+        'AZ': 'Arizona',
+        'CA': 'California',
+        'CO': 'Colorado',
+        'CT': 'Connecticut',
+        'DE': 'Delaware',
+        'FL': 'Florida',
+        'GA': 'Georgia',
+        'HI': 'Hawaii',
+        'IA': 'Iowa',
+        'ID': 'Idaho',
+        'IL': 'Illinois',
+        'IN': 'Indiana',
+        'KS': 'Kansas',
+        'KY': 'Kentucky',
+        'LA': 'Louisiana',
+        'MA': 'Massachusetts',
+        'MD': 'Maryland',
+        'ME': 'Maine',
+        'MI': 'Michigan',
+        'MN': 'Minnesota',
+        'MO': 'Missouri',
+        'MS': 'Mississippi',
+        'MT': 'Montana',
+        'NC': 'North Carolina',
+        'ND': 'North Dakota',
+        'NE': 'Nebraska',
+        'NH': 'New Hampshire',
+        'NJ': 'New Jersey',
+        'NM': 'New Mexico',
+        'NV': 'Nevada',
+        'NY': 'New York',
+        'OH': 'Ohio',
+        'OK': 'Oklahoma',
+        'OR': 'Oregon',
+        'PA': 'Pennsylvania',
+        'RI': 'Rhode Island',
+        'SC': 'South Carolina',
+        'SD': 'South Dakota',
+        'TN': 'Tennessee',
+        'TX': 'Texas',
+        'UT': 'Utah',
+        'VA': 'Virginia',
+        'VT': 'Vermont',
+        'WA': 'Washington',
+        'WI': 'Wisconsin',
+        'WV': 'West Virginia',
+        'WY': 'Wyoming'
 }
 
 
@@ -51,7 +95,15 @@ for i in states:
 
 		temp = []
 		for k in range(21):
-			temp.append(temp_p[k] - temp_c[k])
+			if temp_c[k] == 0:
+				if temp_p[k] != 0:
+					temp.append(1)
+				else:
+					temp.append(0)
+			elif temp_p[k] / temp_c[k] > 2:
+				temp.append(-1)
+			else:
+				temp.append(1 - temp_p[k] / temp_c[k])
 
 		dct[names[j]] = temp
 
@@ -69,13 +121,14 @@ for i in states:
 
 	xpos = [1]*21 + [2]*21 + [3]*21
 	ypos = list(range(1996, 2017, 1)) * 3
-	zpos = np.ones(63)
+	zpos = np.zeros(63)
 	dz = dct['Hydroelectric'] + dct['Solar'] + dct['Wind']
-	print(dz)
 	dx = np.ones(63)
 	dy = np.ones(63)
 
-	ax1.bar3d(xpos, ypos, zpos, dx, dy, dz, color='#00ceaa')
+	ax1.bar3d(xpos, ypos, zpos, dx, dy, dz, color=['b'] * 21 + ['orange'] * 21 + ['g'] * 21)
+	ax1.set_title(i)
+	ax1.set_alpha(0)
 	plt.show()
 
 	
