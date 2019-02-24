@@ -1,5 +1,11 @@
 #file with dictionary of state abbreviations
 states_dict = {
+        'WV' : 'd',
+        'DE' : '',
+        'KY' : '',
+        'NC' : '',
+        'NV' : '',
+        'RI' : '',
         'AK': 'Alaska',
         'AL': 'Alabama',
         'AR': 'Arkansas',
