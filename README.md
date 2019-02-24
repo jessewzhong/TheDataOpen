@@ -1,6 +1,13 @@
 # TheDataOpen
 Submission for The East Coast Datathon of Citadel's The Data Open 2019 at Princeton University
+
 February 23, 2019
+
+## Topic / Task Statement: Renewable Energy Sources
+"Your goal is to analyze the provided datasets -- and possibly in combination with external data -- 
+and explore hypotheses concerning the datasets you deem relevant. You should strive to reach a 
+proposition with interesting findings that supports and/or furthers the understanding of how various 
+factors influence the energy industry today"
 
 ## Abstract
 With the world growing increasingly alarmed at the impact that emissions have on the global 
