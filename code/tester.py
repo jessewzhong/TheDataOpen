@@ -5,6 +5,7 @@ style.use('ggplot')
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 import states
+import matplotlib
 
 df = pd.read_csv('../../seds.csv')
 
@@ -65,7 +66,8 @@ for i in states.states_dict:
         dx = np.ones(63)
         dy = np.ones(63)
 
-        ax1.bar3d(xpos, ypos, zpos, dx, dy, dz, color=['b'] * 21 + ['orange'] * 21 + ['g'] * 21)
+        #ax1.tick_params(axis='both', zorder=10000)
+        ax1.bar3d(xpos, ypos, zpos, dx, dy, dz, color=[(0, 0, 1.0, 1)] * 21 + [(0.976, 0.451, 0.024, 0.5)] * 21 + [(0, 1.0, 0, 0.5)] * 21)
         ax1.set_title(i)
         ax1.set_alpha(0)
         plt.show()
