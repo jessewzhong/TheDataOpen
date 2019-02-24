@@ -72,19 +72,16 @@ strings_p = ['HYTCP', 'SOTGP', 'WYTCP']
 strings_c = ['HYTXB','SOTXB','WYTXB']
 names = ['Hydroelectric', 'Solar', 'Wind']
 
+df_codes = df.loc[(df['msn'].isin(strings_p)) | (df['msn']isin(strings_c))]
+df_years = df_codes.loc[(1996 <= df_codes['year']) & (df_codes['year'] <= 2016)]
+
 for i in states:
-	li = []
-	'''
-	AKP = df.loc[(df['msn'] in 'HYTCP') & (df['state_code'] == i)]
-	AKP = AKP.loc[(1996 <= AKP['year']) & (AKP['year']<= 2016)]
-	'''
 	dct = {}
 
-	AKP = df.loc[(df['msn'].isin(strings_p)) & (df['state_code'] == i)]
-	AKP = AKP.loc[(1996 <= AKP['year']) & (AKP['year'] <= 2016)]
+	df_state = df_years.loc[(df['state_code'] == i)]
+	df_state_p = df_state.loc[(df_state['msn'].isin(strings_p))]
+	df_state_c = df_state.loc[(df_state['msn'].isin(strings_c))]
 
-	AKC = df.loc[(df['msn'].isin(strings_c)) & (df['state_code'] == i)]
-	AKC = AKC.loc[(1996 <= AKC['year']) & (AKC['year'] <= 2016)]
 	for j in range(3):
 		AKC_temp = AKC.loc[(AKC['msn'] == strings_c[j])]
 		temp_c = AKC_temp['value'].values.tolist()
