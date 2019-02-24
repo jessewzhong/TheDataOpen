@@ -1,5 +1,6 @@
 # TheDataOpen
 Submission for The East Coast Datathon of Citadel's The Data Open 2019 at Princeton University
+February 23, 2019
 
 ## Abstract
 With the world growing increasingly alarmed at the impact that emissions have on the global 
