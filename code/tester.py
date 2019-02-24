@@ -4,94 +4,33 @@ from matplotlib import style
 style.use('ggplot')
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
+import states
 
+df = pd.read_csv('../../seds.csv')
 
-states = {
-        'AK': 'Alaska',
-        'AL': 'Alabama',
-        'AR': 'Arkansas',
-        'AZ': 'Arizona',
-        'CA': 'California',
-        'CO': 'Colorado',
-        'CT': 'Connecticut',
-        'DE': 'Delaware',
-        'FL': 'Florida',
-        'GA': 'Georgia',
-        'HI': 'Hawaii',
-        'IA': 'Iowa',
-        'ID': 'Idaho',
-        'IL': 'Illinois',
-        'IN': 'Indiana',
-        'KS': 'Kansas',
-        'KY': 'Kentucky',
-        'LA': 'Louisiana',
-        'MA': 'Massachusetts',
-        'MD': 'Maryland',
-        'ME': 'Maine',
-        'MI': 'Michigan',
-        'MN': 'Minnesota',
-        'MO': 'Missouri',
-        'MS': 'Mississippi',
-        'MT': 'Montana',
-        'NC': 'North Carolina',
-        'ND': 'North Dakota',
-        'NE': 'Nebraska',
-        'NH': 'New Hampshire',
-        'NJ': 'New Jersey',
-        'NM': 'New Mexico',
-        'NV': 'Nevada',
-        'NY': 'New York',
-        'OH': 'Ohio',
-        'OK': 'Oklahoma',
-        'OR': 'Oregon',
-        'PA': 'Pennsylvania',
-        'RI': 'Rhode Island',
-        'SC': 'South Carolina',
-        'SD': 'South Dakota',
-        'TN': 'Tennessee',
-        'TX': 'Texas',
-        'UT': 'Utah',
-        'VA': 'Virginia',
-        'VT': 'Vermont',
-        'WA': 'Washington',
-        'WI': 'Wisconsin',
-        'WV': 'West Virginia',
-        'WY': 'Wyoming'
-}
-
-
-df = pd.read_csv('../seds.csv')
-
-'''
-HYTCP
-SOTGP
-WYTCP
-'''
+states_stats = {}
 
 strings_p = ['HYTCP', 'SOTGP', 'WYTCP']
 strings_c = ['HYTXB','SOTXB','WYTXB']
 names = ['Hydroelectric', 'Solar', 'Wind']
 
-for i in states:
-	li = []
-	'''
-	AKP = df.loc[(df['msn'] in 'HYTCP') & (df['state_code'] == i)]
-	AKP = AKP.loc[(1996 <= AKP['year']) & (AKP['year']<= 2016)]
-	'''
+df_codes = df.loc[(df['msn'].isin(strings_p)) | (df['msn'].isin(strings_c))]
+df_years = df_codes.loc[(1996 <= df_codes['year']) & (df_codes['year'] <= 2016)]
+
+for i in states.states_dict:
 	dct = {}
 
-	AKP = df.loc[(df['msn'].isin(strings_p)) & (df['state_code'] == i)]
-	AKP = AKP.loc[(1996 <= AKP['year']) & (AKP['year'] <= 2016)]
+	df_state = df_years.loc[(df['state_code'] == i)]
+	df_state_p = df_state.loc[(df_state['msn'].isin(strings_p))]
+	df_state_c = df_state.loc[(df_state['msn'].isin(strings_c))]
 
-	AKC = df.loc[(df['msn'].isin(strings_c)) & (df['state_code'] == i)]
-	AKC = AKC.loc[(1996 <= AKC['year']) & (AKC['year'] <= 2016)]
 	for j in range(3):
-		AKC_temp = AKC.loc[(AKC['msn'] == strings_c[j])]
-		temp_c = AKC_temp['value'].values.tolist()
+		df_state_c_temp = df_state_c.loc[(df_state_c['msn'] == strings_c[j])]
+		temp_c = df_state_c_temp['value'].values.tolist()
 		temp_c = [k * 0.29307107017 for k in temp_c]
 
-		AKP_temp = AKP.loc[(AKP['msn'] == strings_p[j])]
-		temp_p = AKP_temp['value'].values.tolist()
+		df_state_p_temp = df_state_p.loc[(df_state_p['msn'] == strings_p[j])]
+		temp_p = df_state_p_temp['value'].values.tolist()
 
 		temp = []
 		for k in range(21):
@@ -107,10 +46,10 @@ for i in states:
 
 		dct[names[j]] = temp
 
-	states[i] = dct
+	states_stats[i] = dct
 
 	fig = plt.figure()
-	ax1 = fig.add_subplot(122, projection='3d')
+	ax1 = fig.add_subplot(111, projection='3d')
 
 	major_ticks_y = list(range(1996, 2017, 5))
 	major_ticks_x = [1, 1.5, 2, 2.5, 3, 3.5, 4]
@@ -132,35 +71,4 @@ for i in states:
 	plt.show()
 
 	
-print(states)
-
-
-
-
-
-'''
-df.set_index('Date', inplace=True)
-df.to_csv('newcsv2.csv') #prints to csv
-
-df = pd.read_csv('newcsv2.csv')
-print(df.head())
-
-df = pd.read_csv('newcsv2.csv', index_col=0) #sets index column
-print(df.head())
-
-df.columns = ['Austin_HPI'] #changes column name of other one
-print(df.head())
-
-df.to_csv('newcsv3.csv')
-df.to_csv('newcsv4.csv', header=False) #prints with no headers
-
-df = pd.read_csv('newcsv4.csv', names=['Date','Austin_HPI'], index_col=0) #reading from csv with no header
-print(df.head())
-
-df.to_html('example.html') #reads to HTMl, SQL, JSON, etc.
-
-df = pd.read_csv('newcsv4.csv', names=['Date','Austin_HPI'])
-print(df.head())
-
-df.rename(columns={'Austin_HPI':'77006_HPI'}, inplace=True)
-'''
+print(states_stats)
