@@ -18,7 +18,7 @@ df_codes = df.loc[(df['msn'].isin(strings_p)) | (df['msn'].isin(strings_c))]
 df_years = df_codes.loc[(1996 <= df_codes['year']) & (df_codes['year'] <= 2016)]
 
 for i in states.states_dict:
-	dct = {}
+        dct = {}
 
 	df_state = df_years.loc[(df['state_code'] == i)]
 	df_state_p = df_state.loc[(df_state['msn'].isin(strings_p))]
