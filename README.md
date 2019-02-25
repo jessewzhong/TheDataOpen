@@ -1,6 +1,7 @@
 # TheDataOpen
 Submission for The East Coast Datathon of The Data Open 2019, sponsored by Citadel, at Princeton University
-
+* See **Team_24.pdf** for our complete, submitted report
+* See **/code** folder for data analysis files written in Python
 February 23, 2019
 
 ## Topic / Task Statement: Renewable Energy Sources
